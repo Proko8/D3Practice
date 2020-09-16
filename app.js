@@ -14,21 +14,6 @@ const scoreBoard = {
   best: 0,
 };
 
-const player = svg
-  .append("circle")
-  .attr("cx", 400)
-  .attr("cy", 400)
-  .attr("r", 8)
-  .style("fill", "yellow")
-  .style("stroke", "blue")
-  .style("stroke-width", 1);
-
-// const dragHandler = d3.drag().on("drag", function () {
-//   svg.select(this).attr("cx", svg.event.x).attr("cy", svg.event.y);
-// });
-
-// dragHandler(player.selectAll("use"));
-
 const scoreboard = svg
   .append("rect")
   .attr("width", "125")
@@ -51,22 +36,32 @@ const best = svg
   .attr("x", 696)
   .attr("y", 40);
 
-  // function createEnemies() {
-  //   _.range(0, gameSettings.nEnemies).map(i) = {
-  //     id : i,
-  //     x : Math.random() * 100,
-  //     y : Math.random() * 100,
-  //   }
-  // }
-
-function autoTransition(input){
-  input
-  .append("circle")
-  .transition()
-  .duration(3000)
-  .attr("cx", Math.random() * 790)
-  .attr("cy", Math.random() * 790)
+function dragStart(d) {
+  d3.select(this).raise().attr("stroke", "black");
 }
+
+function dragging(event) {
+  d3.select(this)
+  .attr("cx", event.x)
+  .attr("cy", event.y)
+}
+
+function dragStop(d) {
+  d3.select(this).attr("stroke", null);
+}
+
+const player = svg
+  .append("circle")
+  .attr("cx", 400)
+  .attr("cy", 400)
+  .attr("r", 8)
+  .style("fill", "yellow")
+  .style("stroke", "blue")
+  .style("stroke-width", 1)
+  .call(d3.drag()
+  .on("start", dragStart)
+  .on("drag", dragging)
+  .on("end", dragStop));
 
 function trans(input) {
   d3.selectAll(input)
@@ -90,16 +85,6 @@ var enemyTemplate = svg
 .attr("cx", Math.random() * 790)
 .attr("cy", Math.random() * 790)
 .on("end", function(){trans(enemyTemplate)})
-
-// function totalEnemies(enemyTemplate, gameSettings){
-//   let k = 0;
-//   for(let i = 0; i < gameSettings; i++){
-//     console.log(gameSettings)
-//     let array = [this['enemy' + k ] = enemyTemplate];
-//   }
-//   return array;
-// }
-// totalEnemies(enemyTemplate, gameSettings.nEnemies)
 
 var enemy2 = svg
 .append("circle")
@@ -366,3 +351,24 @@ var enemy20 = svg
 .attr("cx", Math.random() * 790)
 .attr("cy", Math.random() * 790)
 .on("end", function(){trans(enemy20)})
+
+
+
+
+
+  // function createEnemies() {
+  //   _.range(0, gameSettings.nEnemies).map(i) = {
+  //     id : i,
+  //     x : Math.random() * 100,
+  //     y : Math.random() * 100,
+  //   }
+  // }
+
+// function autoTransition(input){
+//   input
+//   .append("circle")
+//   .transition()
+//   .duration(3000)
+//   .attr("cx", Math.random() * 790)
+//   .attr("cy", Math.random() * 790)
+// }
